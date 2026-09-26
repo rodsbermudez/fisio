@@ -5,8 +5,10 @@ set -e
 # Arquitetura A2: domínio único com frontend dentro de api/public
 # Execute este script no VPS, no diretório do projeto.
 
+# Ajuste APP_DIR conforme o usuário/pasta do seu CloudPanel.
+# No seu VPS a pasta correta é /home/patropicomunica-fisio/htdocs/...
 DOMAIN="fisio.patropicomunica.com.br"
-APP_DIR="/home/cloudpanel/htdocs/${DOMAIN}"
+APP_DIR="/home/patropicomunica-fisio/htdocs/${DOMAIN}"
 PUBLIC_DIR="${APP_DIR}/api/public"
 
 echo "=== Deploy do Fisio em ${DOMAIN} ==="
