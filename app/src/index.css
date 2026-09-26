@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --brand-rgb: 2 132 199;
+    --brand-hover-rgb: 3 105 161;
+    --brand-light-rgb: 224 242 254;
+    --brand-accent-rgb: 14 165 233;
+
+    font-family: 'Inter', system-ui, -apple-system, 'BlinkMacSystemFont', 'Segoe UI', Roboto, sans-serif;
+    color: #334155;
+    background-color: #F8FAFC;
+  }
+
+  .theme-orange {
+    --brand-rgb: 249 115 22;
+    --brand-hover-rgb: 234 88 12;
+    --brand-light-rgb: 255 247 237;
+    --brand-accent-rgb: 251 146 60;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #0F172A;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-brand text-white font-medium px-4 py-2 rounded-lg transition-colors duration-200;
+  }
+  .btn-primary:hover {
+    @apply bg-brand-hover;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-2 border border-slate-border rounded-lg text-slate-body placeholder-slate-muted focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all;
+  }
+
+  .react-datepicker-wrapper {
+    display: block;
+    width: 100%;
+  }
+
+  .react-datepicker-popper {
+    z-index: 100;
+  }
+
+  .react-datepicker {
+    font-family: inherit;
+  }
+
+  .schedule-calendar .rbc-time-content .rbc-time-slot {
+    min-height: 48px;
+  }
+
+  .schedule-calendar .rbc-event {
+    min-height: 44px;
+    padding: 4px 6px;
+  }
+
+  .schedule-calendar .rbc-event-content {
+    line-height: 1.3;
+  }
+
+  .card {
+    @apply bg-white rounded-xl border border-slate-border shadow-sm;
+  }
+}

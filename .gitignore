@@ -1,0 +1,38 @@
+# Dependencies
+/api/vendor
+/app/node_modules
+
+# Environment files (contain secrets)
+/api/.env
+/api/.env.*
+!/api/.env.example
+!/api/.env.production.example
+/app/.env
+/app/.env.*
+!/app/.env.example
+!/app/.env.production.example
+
+# Build output (gerado no deploy)
+/app/dist
+
+# Laravel runtime
+/api/storage/*.key
+/api/storage/framework/cache/data/*
+!/api/storage/framework/cache/data/.gitignore
+/api/storage/framework/sessions/*
+!/api/storage/framework/sessions/.gitignore
+/api/storage/framework/testing/*
+!/api/storage/framework/testing/.gitignore
+/api/storage/framework/views/*
+!/api/storage/framework/views/.gitignore
+/api/storage/logs/*
+!/api/storage/logs/.gitignore
+/api/bootstrap/cache/*.php
+
+# IDE / OS
+.DS_Store
+.idea
+.vscode
+*.swp
+
+# Local dev scripts are kept; adjust if needed.
