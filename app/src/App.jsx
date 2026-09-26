@@ -34,7 +34,7 @@ import AdminClinicUsers from './pages/admin/AdminClinicUsers';
 import { buildBrandCssVariables, ADMIN_BRAND_CSS } from './utils/colors';
 
 // Base URL do frontend - definida em .env (VITE_BASE_URL)
-const BASE_URL = (import.meta.env.VITE_BASE_URL || '/fisio/app/').replace(/\/$/, '');
+const BASE_URL = (import.meta.env.VITE_BASE_URL || '/').replace(/\/$/, '');
 
 function ThemedRoutes() {
   const { isAdmin, isImpersonating, impersonatedTenant, user } = useAuth();

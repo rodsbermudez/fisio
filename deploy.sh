@@ -21,9 +21,8 @@ composer install --no-dev --optimize-autoloader --no-interaction
 # 2. Build do frontend com env de produção
 echo "[2/5] Buildando o frontend..."
 cd "${APP_DIR}/app"
-if [ ! -f .env.production ]; then
-    cp .env.production.example .env.production
-fi
+# Garante que o build use o .env de produção correto
+cp -f .env.production.example .env.production
 npm ci
 npm run build
 
