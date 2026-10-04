@@ -11,6 +11,7 @@ import {
   CalendarDays,
   UserCog,
   ArrowLeft,
+  BookOpen,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -22,6 +23,7 @@ const baseMenuItems = [
   { to: '/tipos-atendimento', icon: Tag, label: 'Tipos de Atendimento' },
   { to: '/salas', icon: DoorOpen, label: 'Salas' },
   { to: '/planos', icon: Wallet, label: 'Planos' },
+  { to: '/docs', icon: BookOpen, label: 'Documentação' },
 ];
 
 export default function Sidebar() {

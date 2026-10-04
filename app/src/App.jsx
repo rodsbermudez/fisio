@@ -31,6 +31,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminClinics from './pages/admin/AdminClinics';
 import AdminClinicForm from './pages/admin/AdminClinicForm';
 import AdminClinicUsers from './pages/admin/AdminClinicUsers';
+import Docs from './pages/Docs';
 import { buildBrandCssVariables, ADMIN_BRAND_CSS } from './utils/colors';
 
 // Base URL do frontend - definida em .env (VITE_BASE_URL)
@@ -121,6 +122,14 @@ function ThemedRoutes() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/docs"
+          element={
+            <ProtectedRoute>
+              <Docs />
             </ProtectedRoute>
           }
         />
