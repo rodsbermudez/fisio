@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, FileText, CheckCircle, Edit3, Trash2, RotateCcw, Calendar, Clock, MapPin, Wallet, History, CheckCircle2, MoreHorizontal, User } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import Badge from '../components/ui/Badge';
+import EvolutionNotesModal from '../components/appointments/EvolutionNotesModal';
 import { getTreatmentCycle, updateTreatmentCycle, deleteTreatmentCycle } from '../services/treatmentCycles';
 import { listEvaluations, deleteEvaluation, finalizeEvaluation, unfinalizeEvaluation } from '../services/evaluations';
 import { listAppointments, deleteAppointment, updateAppointment } from '../services/appointments';
@@ -22,6 +23,12 @@ export default function TreatmentCycleDetails() {
   const [togglingStatus, setTogglingStatus] = useState(false);
   const [updatingAppointment, setUpdatingAppointment] = useState(null);
   const [extending, setExtending] = useState(false);
+  const [evolutionModal, setEvolutionModal] = useState({
+    open: false,
+    appointment: null,
+    notes: '',
+    mode: 'complete',
+  });
 
   const fetchData = async () => {
     try {
@@ -123,6 +130,16 @@ export default function TreatmentCycleDetails() {
   };
 
   const handleStatusChange = async (appointment, newStatus) => {
+    if (newStatus === 'completed') {
+      setEvolutionModal({
+        open: true,
+        appointment,
+        notes: appointment.evolution_notes || '',
+        mode: 'complete',
+      });
+      return;
+    }
+
     setUpdatingAppointment(appointment.id);
     try {
       await updateAppointment(appointment.id, { status: newStatus });
@@ -138,6 +155,43 @@ export default function TreatmentCycleDetails() {
     } finally {
       setUpdatingAppointment(null);
     }
+  };
+
+  const handleCloseEvolutionModal = () => {
+    setEvolutionModal({ open: false, appointment: null, notes: '', mode: 'complete' });
+  };
+
+  const handleSaveEvolution = async (notes) => {
+    if (!evolutionModal.appointment) return;
+    setUpdatingAppointment(evolutionModal.appointment.id);
+    try {
+      const payload =
+        evolutionModal.mode === 'complete'
+          ? { status: 'completed', evolution_notes: notes }
+          : { evolution_notes: notes };
+      await updateAppointment(evolutionModal.appointment.id, payload);
+      const response = await listAppointments({ treatment_cycle_id: id });
+      setAppointments(response.data.data);
+      if (patientPlan) {
+        const planResponse = await getPatientPlan(patientPlan.id);
+        setPatientPlan(planResponse.data.patient_plan);
+      }
+    } catch (error) {
+      console.error('Erro ao salvar evolução:', error);
+      alert(error?.response?.data?.message || 'Erro ao salvar evolução.');
+    } finally {
+      setUpdatingAppointment(null);
+      handleCloseEvolutionModal();
+    }
+  };
+
+  const handleEditEvolution = (appointment) => {
+    setEvolutionModal({
+      open: true,
+      appointment,
+      notes: appointment.evolution_notes || '',
+      mode: 'edit',
+    });
   };
 
   const handleExtendPlan = async () => {
@@ -620,6 +674,15 @@ export default function TreatmentCycleDetails() {
                         <option value="missed">Faltou</option>
                         <option value="cancelled">Cancelado</option>
                       </select>
+                      {appointment.status === 'completed' && (
+                        <button
+                          onClick={() => handleEditEvolution(appointment)}
+                          className="p-2 text-slate-muted hover:text-brand hover:bg-brand-light rounded-lg transition-colors"
+                          title="Editar evolução"
+                        >
+                          <FileText className="w-4 h-4" />
+                        </button>
+                      )}
                       <Link
                         to={`/atendimentos/${appointment.id}`}
                         className="p-2 text-slate-muted hover:text-brand hover:bg-brand-light rounded-lg transition-colors"
@@ -642,6 +705,20 @@ export default function TreatmentCycleDetails() {
           </div>
         </div>
       </div>
+
+      <EvolutionNotesModal
+        isOpen={evolutionModal.open}
+        title={evolutionModal.mode === 'complete' ? 'Registrar evolução' : 'Editar evolução'}
+        initialNotes={evolutionModal.notes}
+        info={
+          evolutionModal.appointment
+            ? `Atendimento de ${dateToBr(evolutionModal.appointment.appointment_date)} às ${evolutionModal.appointment.start_time?.substring(0, 5)}`
+            : ''
+        }
+        onSave={handleSaveEvolution}
+        onClose={handleCloseEvolutionModal}
+        saving={Boolean(updatingAppointment)}
+      />
     </Layout>
   );
 }
