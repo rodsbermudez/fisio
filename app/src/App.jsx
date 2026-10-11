@@ -25,6 +25,7 @@ import Users from './pages/Users';
 import UserForm from './pages/UserForm';
 import TreatmentCycleForm from './pages/TreatmentCycleForm';
 import TreatmentCycleDetails from './pages/TreatmentCycleDetails';
+import CycleEvolutions from './pages/CycleEvolutions';
 import EvaluationForm from './pages/EvaluationForm';
 import AppointmentForm from './pages/AppointmentForm';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -314,6 +315,14 @@ function ThemedRoutes() {
           element={
             <ProtectedRoute>
               <TreatmentCycleDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ciclos/:id/evolucoes"
+          element={
+            <ProtectedRoute>
+              <CycleEvolutions />
             </ProtectedRoute>
           }
         />
