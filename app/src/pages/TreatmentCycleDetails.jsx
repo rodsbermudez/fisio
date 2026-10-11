@@ -29,6 +29,7 @@ export default function TreatmentCycleDetails() {
     notes: '',
     mode: 'complete',
   });
+  const [expandedEvolutions, setExpandedEvolutions] = useState(new Set());
 
   const fetchData = async () => {
     try {
@@ -191,6 +192,18 @@ export default function TreatmentCycleDetails() {
       appointment,
       notes: appointment.evolution_notes || '',
       mode: 'edit',
+    });
+  };
+
+  const toggleEvolution = (appointmentId) => {
+    setExpandedEvolutions((prev) => {
+      const next = new Set(prev);
+      if (next.has(appointmentId)) {
+        next.delete(appointmentId);
+      } else {
+        next.add(appointmentId);
+      }
+      return next;
     });
   };
 
@@ -658,8 +671,19 @@ export default function TreatmentCycleDetails() {
                           {appointment.professional?.name || 'Sem profissional'}
                         </span>
                       </p>
-                      {appointment.evolution_notes && (
-                        <p className="text-sm text-slate-body mt-2 line-clamp-2">{appointment.evolution_notes}</p>
+                      {appointment.status === 'completed' && appointment.evolution_notes && (
+                        <button
+                          type="button"
+                          onClick={() => toggleEvolution(appointment.id)}
+                          className="mt-2 text-sm text-brand hover:underline flex items-center gap-1"
+                        >
+                          {expandedEvolutions.has(appointment.id) ? 'Ocultar evolução' : 'Ver evolução'}
+                        </button>
+                      )}
+                      {expandedEvolutions.has(appointment.id) && appointment.evolution_notes && (
+                        <div className="mt-2 p-3 bg-slate-surface rounded-lg text-sm text-slate-body whitespace-pre-wrap">
+                          {appointment.evolution_notes}
+                        </div>
                       )}
                     </div>
                     <div className="flex items-center gap-2 ml-4">
